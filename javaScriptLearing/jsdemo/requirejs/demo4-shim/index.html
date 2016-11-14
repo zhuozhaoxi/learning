@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>RequireJS学习</title>
+	<meta charset="utf-8" />
+</head>
+<body>
+	<div id="main">
+		
+	</div>
+	<script src="script/require-2.0.js" ></script>
+	<!-- 如果没有显式指定config及data-main，则默认的baseUrl为包含RequireJS的那个HTML页面的所属目录。 -->
+	
+	<script>
+		require.config({
+			baseUrl: 'script',
+			shim: {
+				math : {
+					deps : ['jquery'],	//如果有依赖，可以添加依赖
+					exports : "MyMath"
+				// math.js 中定义了一个全局变量MyMath,这里将它定义为对外接口
+				}
+			}
+		})
+		require(['math'],function (MyMath) {
+			console.log(MyMath.add(2,3));
+			console.log(MyMath.add(2,3));
+		})
+	</script>
+	<!-- shim配置仅设置了代码的依赖关系，想要实际加载shim指定的或涉及的模块，仍然需要一个常规的require/define调用。设置shim本身不会触发代码的加载。 -->
+</body>
+</html>

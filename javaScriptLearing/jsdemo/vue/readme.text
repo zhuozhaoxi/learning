@@ -1,0 +1,45 @@
+1.{{ text }} 一个数据模型
+
+2.Vue 实例都会代理其 data 对象里所有的属性
+vm.a === vm.$data.a
+
+3. vm.$el = document.getElementById('example') ; vm.$mount('#mount-point');
+
+4. 获取vm对象属性 vm.$属性名,   vm.属性名 获取的是data对象里的属性
+
+5. el 对象选择器、
+	data 数据模型对象、
+	methods 方法数组 方法名:function(){}、
+	created 生命周期 :function(){}、
+	compiled、ready、destroyed
+生命周期图：http://cn.vuejs.org/images/lifecycle.png
+没有控制器概念
+
+6、双 Mustache 标签将数据解析为纯文本而不是 HTML。
+	为了输出真的 HTML 字符串，需要用三 Mustache 标签
+	只处理单次插值 {{* msg }}
+
+
+7、计算属性	computed
+computed: {
+		    // 一个计算属性的 getter
+		    b: function () {
+		      // `this` 指向 vm 实例
+		      return this.a + 1
+		    }
+		  }
+
+8、v-if和v-show
+<h1 v-show="ok">Hello!</h1>
+<h1 v-if="ok">Hello!</h1>
+1、不同的是有 v-show 的元素会始终渲染并保持在 DOM 中。v-show 是简单的切换元素的 CSS 属性 display。
+2、v-show 不支持 <template> 语法。
+3、v-if 有更高的切换消耗而 v-show 有更高的初始渲染消耗。因此，如果需要频繁切换 v-show 较好，如果在运行时条件不大可能改变 v-if 较好。
+
+
+9 v-for 中 | orderBy    | filterBy
+
+10，关于html中 短横线隔开的变量名
+// 关于html和JavaScript 命名的问题,因为HTML特性不区分大小写
+// html中 短横线隔开,如 my-msg
+// javascript需要变成驼峰,如 myMsg

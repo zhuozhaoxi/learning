@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>JavaScript Promise入门</title>
+	<meta charset="utf-8">
+	<script src="/js/jquery-1.9.1.min.js"></script>
+</head>
+<body>
+<!-- http://www.wtoutiao.com/p/p63e4h.html 
+	这个写的不错
+-->
+<script>
+	function getUserName(){
+		//  返回同步的值可以这样写  Promise.resolve('syncdata');
+		// return Promise.resolve({name:'zhuozhaoxi'});
+		return new Promise(function(resolve,reject){
+			console.log('ajax begin');
+			$.ajax({
+				method: 'get',
+				dataType: 'json',
+				url: '/json.php',
+				success: function(data){
+					console.log('ajax end');
+					resolve(data);
+				},
+				error: function(err){
+					console.log('ajax end');
+					reject(err);
+				}
+			});	
+		})
+	}
+
+	// Promise构造函数接受一个异步任务作为参数
+	// 必须返回一个promise对象
+	function someThing(data){
+		console.log('someThing function begin');
+		return new Promise(function(resolve,reject){
+			setTimeout(function(){
+				console.log(data);
+				console.log('someThing function end');
+				resolve(data.name);	  //then会等到前面的promise对象调用resolve 才会被调用
+				// reject('haha');		 // catch
+			},2000);
+		});
+	}
+
+	// 正确
+	// ajax begin
+	// ajax end
+	// test end
+	// Object {name: "zhuozhaoxi"}
+	getUserName().then(function(data){
+		return someThing(data);
+		// 这里并没有返回一个promise对象
+	}).then(function(data){
+		console.log('test end:'+data);
+	}).catch(function(err){
+		console.log(err);
+	});
+	// console.log('demo end');
+
+	// 错误
+	// ajax begin
+	// ajax end
+	// Object {name: "zhuozhaoxi"}
+	// test end
+	// getUserName().then(function(data){
+	// 	setTimeout(function(){
+	// 		console.log(data);	
+	// 	},2000);
+	// 	// 错误，这里并没有返回一个promise对象
+	// }).then(function(data){
+	// 	console.log('test end');
+	// });
+
+
+	// promise 坠落现象 
+	// 如果你认为输出的是bar，那么你就错了。实际上它输出的是foo！
+	// 产生这样的输出是因为你给then方法传递了一个非函数（比如promise对象）的值，代码会这样理解：then(null)，
+	// 随便添加任意多个then(null)，结果都是不变的
+	// Promise.resolve('foo').then(Promise.resolve('bar')).then(function (result) {
+	// 	console.log(result);
+	// });
+</script>
+</body>
+</html>

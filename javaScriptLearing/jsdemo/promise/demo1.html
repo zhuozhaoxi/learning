@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>jq promise</title>
+	<script src="/js/jquery-1.9.1.min.js"></script>
+</head>
+<body>
+<script>
+	var div = $( "<div />" );
+	div.promise().done(function( arg1 ) {
+	  // will fire right away and alert "true"
+	  alert( this === div && arg1 === div );
+	});
+</script>
+</body>
+</html>

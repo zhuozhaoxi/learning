@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>js excel导出测试</title>
+</head>
+
+<script src="Downloadify/downloadify.min.js" type="text/javascript"></script>
+<script src="Downloadify/swfobject.js" type="text/javascript"></script>
+<script src="/js/jquery.min.js" type="text/javascript"></script>
+
+<body>
+<input type="button" id="export_btn" value="导出">
+<table id="myTable">
+	<thead>
+		<tr>
+			<th>测试1</th>
+			<th>测试1</th>
+			<th>测试1</th>
+			<th>测试1</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr><td>测试</td><td>测试</td><td>测试</td><td>测试</td></tr>
+		<tr><td>1</td><td>2</td><td>2</td><td>3</td></tr>
+	</tbody>
+</table>
+
+<script type="text/javascript">
+
+ 
+//封装代码 
+exportToExcel = function (Obj,fileName) {
+    /** 创建一个按钮 将一个或多个table导出成EXCEL
+     *  @param tableArr <Object> { {title:'xxx',table:obj} }
+     *  @param 目标容器的ID
+     */
+    function table2ExcelContent(tableArr) {
+        var excelContent = '<meta http-equiv="content-type" content="text/html; charset=UTF-8" />';
+        // 让长数字显示为文本，而不是科学计数法表示的数字
+        //excelContent = "<style> TD { mso-number-format:\\@; } </style>";
+        if(tableArr != ''){
+	        for (var key in tableArr) {
+		        //取table副本 以便不影响现有页面的内容
+	        	var _table = $(tableArr[key].table).clone();
+		        // 删除不需要的干扰属性
+		        _table.find("*").removeAttr("class onclick href id style");
+		        _table.find("tr").attr('height', 24);
+		        _table.find("tr").show();
+		        //删除不需要的内容
+		        _table.find("img,input[type!=text],[data-no-export]").remove();
+		        
+		        //隐藏勾选的那列
+		        _table.find("input[type=checkbox]").parent().remove();
+		        //隐藏下拉选择
+		        _table.find('span[dir="ltr"]').remove();
+		        _table.find("i").remove();
+		
+		        //select input 显示文本
+		        _table.find("select").each(function () {
+		            $(this).after($(this).children('option:selected').html());
+		            $(this).remove(); 
+		        });
+		        _table.find("input[type=text],input[type=button]").each(function () {
+		            $(this).after($(this).val());
+		            $(this).remove();
+		        });
+	
+		        //如果有 则加入标题
+		        if (tableArr[key].title != undefined) {
+		        	_table.prepend('<div align="center"><h3>' + tableArr[key].title + '</h3></div>');
+		        }
+		        
+		        //生成Excel中的HTML代码
+		        excelContent += '<table border="1">' + _table.html() + '</table>';
+		        excelContent += '<table><tr height="40"></tr></table>';
+	        }
+        }else{
+        	excelContent = ' ';
+        }
+        
+        return excelContent;
+    }
+    
+    function getData() {
+        var tableArr = [];
+        var title = '测试';
+        var table = $(this);
+    	tableArr.push({title:title,table:Obj});
+        var output = table2ExcelContent(tableArr);
+        $('[data-excel-output="true"]').each(function () {
+            var _ele = $(this).clone();
+            _ele.find("*").removeAttr("class onclick href id");
+            var html = $('<div></div>').append(_ele);
+            output += '<table><td colspan="12">' + html.html() + '</td></table>';
+        });
+        return output;
+    }
+
+    Downloadify.create('export_btn',{
+	    filename: 'test.xls',
+	    data: function(){ 
+	    	debugger;
+	      return getData();
+	    },
+	    onComplete: function(){ 
+	      alert('Your File Has Been Saved!'); 
+	    },
+	    onCancel: function(){ 
+	      alert('You have cancelled the saving of this file.');
+	    },
+	    onError: function(){ 
+	      alert('You must put something in the File Contents or there will be nothing to save!'); 
+	    },
+	    transparent: false,
+	    swf: 'Downloadify/downloadify.swf',
+        downloadImage: 'Downloadify/download.png',
+	    width: 100,
+	    height: 30,
+	    transparent: true,
+	    append: false
+  });
+};
+//调用代码
+exportToExcel($('#myTable'),'产品费用总表');
+</script>
+
+
+</body>
+</html>

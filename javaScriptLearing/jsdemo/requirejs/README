@@ -1,0 +1,31 @@
+代码来源	http://www.ruanyifeng.com/blog/2012/10/javascript_module.html
+作者： 阮一峰
+日期： 2012年10月26日
+
+
+var 类 = function(arg){
+	var x1 = ...;
+	var x2 = 1223;
+	var f1 = function(){
+
+	}
+	var f2 = function(){
+
+	}
+
+	// 对外暴露的接口
+	return {
+		x1: x1,
+		f1: f1
+	}
+};
+
+如何使用？
+var	对象 = 类(arg);
+
+
+合并起来
+var 对象 = (function(arg){
+	var x1 = ...;
+	xxxxxxxxxxxxxx
+})(arg);

@@ -1,0 +1,37 @@
+	<!DOCTYPE html>
+	<html>
+	<head>
+		<title>querySelectorAll 和 document.getElementsBy区别</title>
+		<meta charset="utf-8">
+	</head>
+	<body>
+		<!-- querySelector 返回的是一个Static Node List，是元素集合的一个快照（副本） -->
+		<!-- 而getElementsBy 系列的返回的是一个 Live Node List，会随html结构改变而动态刷新 -->
+		<ul><li>a</li><li>b</li></ul>
+		<script type="text/javascript">
+			// Demo 1
+			// var ul = document.querySelectorAll('ul')[0],
+			//     lis = ul.querySelectorAll("li");
+			// for(var i = 0; i < lis.length ; i++){
+			//     ul.appendChild(document.createElement("li"));
+			// }
+
+			//  Demo 2 以下会照成死循环
+			// var ul = document.getElementsByTagName('ul')[0], 
+			//     lis = ul.getElementsByTagName("li"); 
+			// for(var i = 0; i < lis.length ; i++){
+			// 	// 每次往ul里面插入li元素,导致lis更新，长度增加，陷入死循环
+			//     ul.appendChild(document.createElement("li")); 
+			// }
+		</script>
+		<script src="/js/jquery.min.js"></script>
+		<script>
+			// jq返回的也是静态的
+			var ul = $('ul').eq(0),
+				lis = $(ul).find('li');
+			for(var i = 0; i < lis.length ; i++){
+			    ul.append($('<li>a</li>'));
+			}
+		</script>
+	</body>
+	</html>

@@ -1,0 +1,28 @@
+主要的方法
+1	seajs.config({一些配置})
+
+2	seajs.use('./a') 或者 seajs.use('./a',function(a){ });
+
+Sea.js 推崇一个模块一个文件，遵循统一的写法
+3	define(id?,deps?,factory(){} );
+
+3.1 factory函数形式 	function(require,exports,module){} 
+		require 用来获取指定模块的接口
+		exports 是对外的接口对象，其实是module.exprots的一个引用
+		module	模块对象
+
+4	require的两种方式
+		require 用来获取指定模块的接口。 一次一个。
+		require.async 用来在模块内部异步加载一个或多个模块。
+			可以这样
+			// 异步加载多个模块，在加载完成时，执行回调
+			  require.async(['./c', './d'], function(c, d) {
+			    c.doSomething();
+			    d.doSomething();
+			  });
+
+// 定义一个模块的方式
+define(id?,deps?,factory(){} );
+id: 模块标识，缺省为文件路径
+deps: 模块依赖，缺省的话会自动构建
+factory 能是一个字符串，也能是一个对象，这两种情况将直接返回，或者一个函数

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>SeaJs学习</title>
+	<meta charset="utf-8" />
+	<script src="./seajs/2.2.0/sea.js"></script>
+</head>
+<body>
+<script>
+	seajs.config({
+		debug: true;
+	});
+	seajs.use('./main',function (main) {
+		main.test();
+	});
+</script>
+
+<!-- 除了回调访问，还有别的方式吗 -->
+<!-- var main = seajs.use('./main');
+	console.log(main); 这种为啥出错了 -->
+</body>
+</html>

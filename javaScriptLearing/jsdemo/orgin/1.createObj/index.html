@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>构造对象</title>
+	<meta charset="utf-8">
+</head>
+<body>
+<script>
+	function Point(x,y) {
+		this.x = x;
+		this.y = y;
+	}
+
+	var p = new Point(1,4);
+	console.log(p);
+	Point.prototype.r = function () {
+		return this.x + this.y;
+	}
+
+	console.log(p.r());
+</script>
+</body>
+</html>
