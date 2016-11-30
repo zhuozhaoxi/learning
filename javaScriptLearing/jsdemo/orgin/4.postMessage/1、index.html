@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>postMessage测试</title>
+</head>
+<body>
+    收到内容:<br />
+    <div id="content">
+
+    </div>
+    <iframe src="1、t.html" id="myIframe" ></iframe>
+    <script src='/js/jquery.min.js'></script>
+<script>
+    // 考虑兼容
+    if(window.addEventListener){
+        window.addEventListener("message",handleMessage,false);
+    }else{
+        window.addEventListener("onmessage",handleMessage); // For IE8
+    }
+
+    function handleMessage(e){
+        $('#content').html( $('#content').html() +e.data +'<br />');
+    }
+
+    window.onload=function(){
+        window.frames[0].postMessage('来自父窗口的内容:lalalala  by index.html','http://localhost/');
+    }
+    // 下面不知道为啥触发不了
+//    $(function(){
+//        // 通常，容器只需要等待onload事件的触发，以此来得知所有iframe都已载入完毕。
+//        // iframe和当前窗口同源，所以使用'/'
+////        document.getElementById('myIframe').contentWindow.postMessage("来自父窗口的内容:lalalala  by index.html","/");
+//        window.frames[0].postMessage('getcolor','http://localhost/');
+//    });
+</script>
+</body>
+</html>
