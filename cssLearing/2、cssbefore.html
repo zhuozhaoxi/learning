@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>css before after 测试</title>
+	<meta charset = "utf-8">
+<style>
+a::before{
+    content: url("https://www.baidu.com/img/baidu_jgylogo3.gif");
+}
+a::after{
+    content:"("attr(href)")";
+}
+a{
+    text-decoration: none;
+}
+</style>
+</head>
+<body>
+<a href="http://www.baidu.com">百度</a>
+
+</body>
+</html>

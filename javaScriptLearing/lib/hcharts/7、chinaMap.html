@@ -10,19 +10,234 @@
 	<script src="zh-cn-all-sar-taiwan.js"></script>
 </head>
 <style>
-#container {
-    height: 328px; 
-    min-width: 310px; 
-    max-width: 800px; 
-    margin: 0 auto; 
-}
+    *{
+        font-family: Microsoft YaHei;
+    }
+    .chart-wrapper {
+        border: 1px solid #ccc;
+        border-top: 3px solid #42b2bd;
+        min-width: 310px;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    .chart-wrapper .chart-content{
+        background-color: #fff;
+        padding: 0;
+        min-width: 100px;
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+    }
+    .chart-wrapper .chart-content-header{
+        overflow: hidden;
+        height: 30px;
+        line-height: 30px;
+        border-bottom: 1px solid #ccc;
+    }
+    .chart-wrapper .content-title{
+        font-size: 14px;
+        color: #555;
+        font-weight: bold;
+        display: inline-block;
+        padding-left: 10px;
+        display: block;
+        overflow: hidden;
+        width: auto;
+        white-space: nowrap;
+        text-align: left;
+    }
+    .chart-wrapper .chart-buttonContainer{
+        width: 20px;
+        height: 20px;
+        position: absolute;
+        background-image: url('http://epr.oa.com/debug/Content/themes/base/Images/table-chart-icon-2.png');
+        border: 1px solid #ccc;
+        background-color: #fff;
+        margin: -25px 0px 0px 3px;
+        cursor: pointer;
+        overflow: hidden;
+        z-index: 1;
+    }
+    .chart-wrapper .insideContent{
+        width: 40px;
+        height: 20px;
+        position: relative;
+        overflow: hidden;
+    }
+    .chart-wrapper .chart-eventButton{
+        width: 40px;
+        height: 20px;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        background-color: #fff;
+        filter: alpha(opacity=0);
+        -moz-opacity: 0;
+        opacity: 0;
+    }
+    .chart-wrapper .chart-table{
+        width: 100%;
+    }
+
+    table tr:nth-child(even){
+        background-color: #fffaf7;
+    }
+    table.chart-table th,table.chart-table td{
+        height: 29px;
+        line-height: 29px;
+        text-align: center;
+        vertical-align: middle;
+        padding: 0px 10px;
+        overflow: hidden;
+    }
+    table.chart-table th{
+        background-color: #eee;
+        font-size: 14px;
+    }
+    table.chart-table th ~ th,table.chart-table td ~ td{
+        border-left: 1px solid #ddd;
+    }
+    table.chart-table td{
+        border-top: 1px solid #ddd;
+        font-size: 12px;
+    }
+    .PageCountPanel {
+        border-top: 1px solid #ccc;
+        padding: 6px;
+        font-size: 12px;
+        font-family: Arial;
+        overflow: hidden;
+    }
+    .PageCount li {
+        margin: 0px 0px 0px 0px;
+        padding: 0px 0px 0px 0px;
+        float: right;
+        line-height: 25px;
+        display: inline-block;
+        text-align: center;
+    }
+    .PageCount li a {
+        display: inline-block;
+        text-align: center;
+        margin-right: 10px;
+        color: #000;
+        cursor: pointer;
+    }
+    .PageCount li .selectedA {
+        background-color: #ccc;
+        border: 1px solid #ddd;
+        color: #000;
+        font-weight: bold;
+        border-radius: 14px 14px;
+        width: 25px;
+    }
+    .chart-wrapper .chart-content{
+        transition:height 0.8s;
+        -moz-transition:height 0.8s;/* Firefox 4 */
+        -webkit-transition:height 0.8s; /* Safari and Chrome */
+        -o-transition:height 0.8s; /* Opera */
+    }
+    .chart-wrapper .chart-buttonContainer{
+        background-position-x: -20px;
+        transition:background-position-x 0.5s;
+        -moz-transition:background-position-x 0.5s;/* Firefox 4 */
+        -webkit-transition:background-position-x 0.5s; /* Safari and Chrome */
+        -o-transition:background-position-x 0.5s; /* Opera */
+    }
 </style>
-<div id="container"></div>
+<body>
+<div class="chart-wrapper">
+    <div class="chart-content-header">
+        <span class="content-title" title="省份">省份</span>
+    </div>
+    <div class="chart-content" id="content-item" style="height: 400px">
+    </div>
+    <div class="chart-tableContent" style="width: auto;height: auto;position:absolute;top: -2000px">
+        <table border="0" cellpadding="0" cellspacing="0" class="chart-table">
+            <thead>
+                <tr>
+                    <th>省份</th>
+                    <th>数量</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>数据内容</td>
+                    <td>数据内容</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="PageCountPanel">
+            <ul class="PageCount">
+                <li>
+                    <a class="selectedA" index="1"> 1</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="chart-buttonContainer"><div class="insideContent"><div class="chart-eventButton" title="切换:图/表"></div></div></div>
+</div>
 
 </body>
 <script type="text/javascript">
-	$(function () {
+    $(function () {
+        // 创建分页栏
+        function createPageToolbar(currentPage,total,pageSize){
+            if(total == 0){
+                return '';
+            }
+            var pageLength = 5; // 展示5页
+            var maxPage = Math.ceil(total/pageSize);
+            var leftPageNum = Math.max(1, currentPage - Math.floor( (pageLength - 1)/2) );
+            var rightPageNum = Math.min( leftPageNum + pageLength - 1,maxPage);
+            if (rightPageNum - leftPageNum != pageLength - 1){
+                leftPageNum = Math.max(1,rightPageNum + 1 - pageLength);
+            }
 
+            var retStr = '<li><a class="page-btn" data-page-num='+maxPage+' >»</a></li>';
+            for (var i = rightPageNum; i >= leftPageNum; i--){
+                var isActive = currentPage == i ? 'selectedA' : '';
+                retStr += '<li><a class="page-btn '+isActive+'" data-page-num='+i+' >'+i+'</a></li>';
+            }
+            retStr += '<li><a class="page-btn" data-page-num=1 >«</a></li>';
+            return retStr;
+        }
+
+        function showPage(index,data){
+            var pageSize = 10;
+            var pageToolbarHtml = createPageToolbar(index,data.length || 0,pageSize);
+            $('.PageCount').html(pageToolbarHtml);
+
+            var dataStr = '';
+            for(var i = (index - 1)*pageSize;i < index * pageSize && i < data.length;i++){
+                var tr = "<tr>";
+                var row = data[i];
+                for(var p in row){
+                    tr += '<td>'+row[p]+'</td>';
+                }
+                tr += '</tr>';
+                dataStr += tr;
+            }
+            $('.chart-tableContent tbody').html(dataStr);
+        }
+
+        // 记录一下地图的高
+        var originalHeight = '';
+        $('.chart-wrapper').on('click','.chart-buttonContainer',function(){
+            if(originalHeight === ''){
+                originalHeight = $(this).siblings('.chart-content').css('height');
+            }
+            var curr = $(this).css('background-position-x');
+            if (curr == '-20px'){  // 切换到表格
+                $(this).css('background-position-x','0px');
+                $(this).siblings('.chart-tableContent').css('position','').css('top','');
+                $(this).siblings('.chart-content').css('height','0px');
+            }else{  // 切换到图
+                $(this).css('background-position-x','-20px');
+                $(this).siblings('.chart-content').css('height',originalHeight);
+                $(this).siblings('.chart-tableContent').css('position','absolute').css('top','-2000px');
+            }
+        });
     // Prepare demo data
     var data = [
         {
@@ -318,9 +533,17 @@
             "value": 72
         }
     ];
+    data.sort(function(a,b){
+        return b.value - a.value ;
+    });
+    showPage(1,data);
+    $('.PageCount').on('click','.page-btn',function(){
+        var pageIndex = $(this).data('pageNum');
+        showPage(pageIndex,data);
+    });
 
     // Initiate the chart
-    $('#container').highcharts('Map', {
+    $('#content-item').highcharts('Map', {
 
         title : {
             text : ''
@@ -342,12 +565,12 @@
             enabled: false
         },
         // 地图缩放
-        // mapNavigation: {
-        //     enabled: true,
-        //     buttonOptions: {
-        //         verticalAlign: 'bottom'
-        //     }
-        // },
+         mapNavigation: {
+             enabled: true,
+             buttonOptions: {
+                 verticalAlign: 'top'
+             }
+         },
 
         colorAxis: {
             min: 0
@@ -375,12 +598,6 @@
         }]
     });
 });
-
-var t = {};
-function copy(){
-    t = Highcharts.maps['countries/cn/custom/cn-all-sar-taiwan'];
-    
-}
 
 </script>
 </html>

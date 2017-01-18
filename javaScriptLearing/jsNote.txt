@@ -1,0 +1,38 @@
+﻿1、url 中文乱码
+使用 encodeURI 必须使用两层
+encodeURI(encodeURI(中文内容));
+
+解码
+decodeURI(....)
+
+encodeURI
+和
+encodeURIComponent
+
+简单来说,decodeURIComponent编码更彻底一些，会将 ";" | "/" | "?" | ":" | "@" | "&" | "=" | "+" | "$" | "," 等保留字符都进行编码, 而decodeURI不会.
+用途上来说,decodeURI可以用来对完整的URI字符串进行编码处理， encodeURIComponent可以对URI中一个部分进行编码，从而让这一部分可以包含一些URI保留字符
+http://www.mysite.com/send-to-friend.aspx?url=http://www.mysite.com/product.html 
+如上链接，显然上面的url值是URI中的一个部分，里面包含了URI保留关键字符
+必须调用encodeURIComponent进行编码.
+可以参考http://www.jb51.net/article/22880.htm
+
+2、with语句
+语法格式  
+with(object instance)  
+{  
+    //代码块  
+}  
+有时候，我在一个程序代码中，多次需要使用某对象的属性或方法，照以前的写法，都是通过:对象.属性或者对象.方法这样的方式来分别获得该对象的属性和方法，
+着实有点麻烦，学习了with语句后，可以通过类似如下的方式来实现：  
+with(objInstance)  
+{  
+       var str = 属性1;
+.....  
+} 去除了多次写对象名的麻烦。
+
+相当于objInstance.str = 属性1;
+
+
+3、eval作用域
+正常模式下，Javascript语言有两种变量作用域（scope）：全局作用域和函数作用域。严格模式创设了第三种作用域：eval作用域。
+eval(string); 执行string字符串代码. 可以将代码存在string中，需要时，使用eval(string)调用
