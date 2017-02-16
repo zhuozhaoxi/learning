@@ -1,7 +1,10 @@
+// treeTable('#table',option);  option = {fields : {},computed: {}, };
+// 父子树 =》 data需要带id 和 parent_id ;  option 需要设置treeBeginFlag，作为树的开头
 var treeTable = function(targetTable,option,data){
         targetTable = $(targetTable);
         // 记录当前数据
-        var currentData = data || null;
+        var originalData = data || null; //原始数据
+        var currentData = data || null; // 临时数据,处理过程中，数据会更改
         var defaultOption = {
             computed : {},  // 计算数据
             attr: {},       // 定义html属性 e.g  'key' : { class : 'text-center' }
@@ -78,7 +81,7 @@ var treeTable = function(targetTable,option,data){
             if(childData.length > 0){
                 childData.reverse();
                 childData.forEach(function(row){
-                    var tr = $("<tr data-id="+row.id+" data-parent="+row.parent_id+" data-level="+level+" data-show=0></tr>");
+                    var tr = $("<tr data-id='"+row.id+"' data-parent='"+row.parent_id+"' data-level='"+level+"' data-show=0></tr>");
                     var i = 1;
                     for (var key in option.fields){
                         var td = $("<td name="+key+"></td>");
@@ -116,6 +119,8 @@ var treeTable = function(targetTable,option,data){
                     }
 
                     if(option.treeBeginFlag !== null){
+                        //下一次递归前 去掉已经加入的数据
+                        currentData = currentData.filter(function (value){ return value.parent_id != parentId });
                         // 递归
                         createTree(row.id,tr,level+1);
                     }else{
@@ -126,7 +131,8 @@ var treeTable = function(targetTable,option,data){
                 $(targetTr).find('td').first().find('i.tree-table-toggle').remove();
             }
         }
-        // 监听切换按钮
+        // 监听切换按钮,先移除可能已经存在的监听
+        $(targetTable).off('click','tr td i');
         $(targetTable).on('click','tr td i',toggleChild);
         // 默认自动加载数据
         createHead();
@@ -136,6 +142,7 @@ var treeTable = function(targetTable,option,data){
         return {
             setData : function(data){
                 //清空原数据
+                originalData = data || null;
                 currentData = data;
                 clearTree();
                 createTree(option.treeBeginFlag);
@@ -143,7 +150,7 @@ var treeTable = function(targetTable,option,data){
             setOption : function(newOption){
                 option = $.extend(option,newOption);
                 createHead();
-                this.setData(currentData);
+                this.setData(originalData);
             }
         };
     }
