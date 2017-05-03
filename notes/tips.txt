@@ -1,0 +1,14 @@
+点击流问题
+ onclick 300ms延迟  ，路由第一次进入时不执行，第二次进入才执行。 改成ontouchstart
+v-touch:tap  监听的touchstart
+
+
+vue 路由切换  data 生命周期中   dom结构尚未出现，  需要加nextTick
+mysql  group_concat 长度限制
+可配置。
+php session 文件锁 curl请求过久
+session_write_colse()
+
+
+
+sql注入问题：  get,post接收的时候统一过滤mysql_real_escape_string
