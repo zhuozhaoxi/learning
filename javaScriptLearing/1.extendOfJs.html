@@ -1,0 +1,107 @@
+<html>
+<head>
+    <title>js继承测试</title>
+    <meta charset="utf-8">
+</head>
+<body>
+    <button onclick="coreObject.hello()">core</button>
+    <button onclick="childObject.hello()">child</button>
+</body>
+<script>
+    // 通过原型来继承
+    var coreObject = {
+        a : '1',
+        b : '2',
+        hello : function(){
+            alert('hello by core! a:'+this.a+'b:'+this.b);
+        }
+    };
+
+    // 以coreObject 为原型 创建 childObject
+    var childObject = Object.create(coreObject);    // 继承a,b,hello
+    childObject.hello = function(){                 // 重写hello
+        console.log(this); // 返回的是childObject
+        alert('hello by child! a:'+this.a+'b:'+this.b);
+    };
+    childObject.c = 3;                              // 定义c
+
+    var lastChild = Object.create(childObject);     // 继承a,b,c,hello
+    // 原型继承end
+
+
+    // 构造函数 类继承
+    function ConstructObject(){
+        this.a = 1;
+    }
+    ConstructObject.b = 2;
+    ConstructObject.prototype.c = 3;
+    var o = new ConstructObject();  // 继承a,c;   b继承不到。不是原型上的数据
+
+    /*
+     * 自编扩展方法
+     */
+    function extend(o,p){
+        for(var prop in p ){
+            o[prop] = p[prop];
+        }
+        return o;
+    }
+
+    // 这种对construct 原型是有修改的
+    function defineClass(construct,methods,staticVar){
+        if(methods) extend(construct.prototype,methods);
+        if(staticVar) extend(construct,staticVar);  // 这里拿来干嘛的。 作为类变量其实有点没有意义
+        return construct;
+    }
+
+    var defineObject = defineClass(ConstructObject,{hello:function(){console.log('say hello')}},{test:'first'});
+
+    var d = new defineObject();// 继承 a,c, hello;
+
+    /**
+     * @desc 以p为原型创建一个对象，Object.create的加强版
+     * @param p
+     */
+    function inherit(p){
+        if(p == null) throw TypeError();
+        if(Object.create){
+           return Object.create(p);
+        }
+        var t = typeof p;
+        if(t !== 'object' && t !== 'function') throw TypeError();   // 进一步类型判断
+        function F(){}  // 定义一个空的构造函数
+        F.prototype = p; // 设定原型为p
+        return new F();
+    }
+    <!--js的构造函数 类继承其实 就是 将父类构造函数的原型（或者原型拷贝）设置为 子类构造函数的原型-->
+    function defineSubClass(superClass,constructor,methods,statics){
+        // 建立子类的原型对象
+        constructor.prototype = inherit(superClass);
+        constructor.prototype.constructor = constructor;
+        // 复制方法和类属性
+        if(methods) extend(constructor.prototype,methods);
+        if(statics) extend(constructor,statics);  // 这里拿来干嘛的。 作为类变量其实有点没有意义
+        // 返回这个子类的构造函数
+        return constructor;
+    }
+
+//    var f = 'global';
+//    var fn = function(){
+//        var f = 'local';
+//        function ff(){
+//            return f;
+//        }
+//        return ff;
+//    };
+//    fn()(); // local
+
+//    var f = 'global';
+//    var fn = function(){
+//        console.log(this.f);
+//    };
+//    (function(){
+//        var f = 'local';
+//        fn();     // global
+//    })();
+</script>
+</html>

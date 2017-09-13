@@ -36,3 +36,7 @@ with(objInstance)
 3、eval作用域
 正常模式下，Javascript语言有两种变量作用域（scope）：全局作用域和函数作用域。严格模式创设了第三种作用域：eval作用域。
 eval(string); 执行string字符串代码. 可以将代码存在string中，需要时，使用eval(string)调用
+
+
+4、js声明提前
+将函数内的变量声明“提前”至函数顶部，同时变量初始化留在原来的位置
