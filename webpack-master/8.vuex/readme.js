@@ -1,0 +1,1 @@
+vuex => State（状态），Mutations（变更） 和 Actions（动作）

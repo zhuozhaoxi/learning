@@ -1,0 +1,5 @@
+h1 {
+    color: red;
+    background-image: url('./image/Desert.jpg');
+}
+/* 读取图片  url-loader, file-loader */

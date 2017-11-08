@@ -1,0 +1,11 @@
+- dist //文件生成目录
+    -- //自动生成
+- node_module //自动安装
+    -- ...
+- src //文件入口
+    -- components //组件存放
+        -- app.vue //主.vue
+    -- main.js //主.js
+- index.html //主.html
+- package.json //npm 配置
+- webpack.cofig.js // webpack配置
