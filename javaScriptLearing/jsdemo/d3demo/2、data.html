@@ -1,0 +1,30 @@
+<html>
+<meta charset="UTF-8">
+<title>数据驱动</title>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<body>
+    <p>hello world</p>
+    <p>second hello world</p>
+</body>
+<script>
+    // example
+//    d3.select("body")
+//            .selectAll("p")
+//            .data([4, 8, 15, 16, 23, 42])
+//            .enter().append("p")
+//            .text(function(d) { return "I’m number " + d + "!"; });
+
+    // Update…      // 更新现有节点，多余的数据不会自动新增节点
+    var p = d3.select("body")
+            .selectAll("p")
+            .data([4, 8, 15, 16, 23, 42])
+            .text(function(d) { return d; });
+
+    // Enter…       // 根据自动新增节点, 若数据对应位置节点已经存在，则不会覆盖该节点，保留原始节点
+    p.enter().append("p")
+            .text(function(d) { return d; });
+//
+//    // Exit…      // 删除数据对应不上的 多余的节点
+    p.exit().remove();
+</script>
+</html>

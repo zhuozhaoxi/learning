@@ -1,0 +1,21 @@
+<html>
+    <meta charset="UTF-8">
+    <title>selection</title>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <body>
+        <p style="background: red">hello world</p>
+        <p style="background: red">second hello world</p>
+    </body>
+    <script>
+        d3.selectAll("p").style("color", "white");
+        d3.select("body").style("background-color", "black");
+
+//        动态属性
+        d3.selectAll("p").style("color", function() {
+            return "hsl(" + Math.random() * 360 + ",100%,50%)";
+        });
+        d3.selectAll("p").style("color", function(d, i) {
+            return i % 2 ? "#fff" : "#eee";
+        });
+    </script>
+</html>

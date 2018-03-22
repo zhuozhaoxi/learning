@@ -1,0 +1,34 @@
+<html>
+<meta charset="UTF-8">
+<title>简单的柱状图</title>
+<script src="https://d3js.org/d3.v4.min.js" charset="UTF-8"></script>
+<style>
+    .chart div {
+        font: 10px sans-serif;
+        background-color: steelblue;
+        text-align: right;
+        padding: 3px;
+        margin: 1px;
+        color: white;
+    }
+</style>
+<body>
+    <div class="chart">
+    </div>
+</body>
+<script>
+    var data = [30, 86, 168, 281, 303, 365];
+
+    // 固定宽度，按比例缩放, 数据范围 0 - 365(data最大值)  宽度范围0-420
+    var x = d3.scaleLinear().domain([0, d3.max(data)])
+            .range([0, 420]);
+
+    d3.select(".chart")
+            .selectAll("div")
+            .data(data)
+            .enter()
+            .append("div")
+            .style("width", function(d) { return x(d) + "px"; })
+            .text(function(d) { return d; });
+</script>
+</html>

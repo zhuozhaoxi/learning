@@ -1,0 +1,16 @@
+<html>
+<meta charset="UTF-8">
+<title>过渡动画</title>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<body>
+</body>
+<script>
+    d3.select("body").transition()
+            .style("background-color", "black");
+
+    d3.selectAll("circle").transition()
+            .duration(750)
+            .delay(function(d, i) { return i * 10; })
+            .attr("r", function(d) { return Math.sqrt(d * scale); });
+</script>
+</html>
