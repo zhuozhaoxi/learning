@@ -15,7 +15,7 @@
 　　　　　　};
 　　　　}
 　　};
-	console.log(object1.getNameFunc()());
+	console.log(object1.getNameFunc()());	// The Window
 
 	var name2 = "The Window";
 　　var object2 = {
@@ -27,7 +27,7 @@
 　　　　　　};
 　　　　}
 　　};
-	console.log(object2.getNameFunc()());
+	console.log(object2.getNameFunc()());	// My Object
 </script>
 </body>
 </html>
