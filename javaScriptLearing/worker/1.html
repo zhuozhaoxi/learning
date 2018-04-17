@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>  
+<html>
+<head>  
+<meta charset="UTF-8">  
+<meta name="description" content="什么是Web Workers?
+    当在 HTML 页面中执行脚本时，页面的状态是不可响应的，直到脚本已完成。
+	web worker 是运行在后台的 JavaScript，独立于其他脚本，不会影响页面的性能。
+	您可以继续做任何愿意做的事情：点击、选取内容等等，而此时 web worker 在后台运行。">
+<title>webworker测试</title>
+</head>
+<body>  
+    <!-- web worker是运行在后台的javascript，不会影响页面的性能 -->  
+    <p>计数:<output id="result"></output></p>  
+    <button onclick="startWorker()">开始worker</button>  
+    <button onclick="endWorker()">停止worker</button>    
+    <br><br>  
+    <script type="text/javascript">  
+       var w;         
+       function startWorker(){  
+           if(typeof(Worker)!="undefined"){//浏览器支持web worker  
+               if(typeof(w)=="undefined"){//w是未定义的,还没有开始计数        
+                   w = new Worker("webworker.js");//创建一个Worker对象,利用Worker的构造函数  
+               }  
+               //onmessage是Worker对象的properties  
+               w.onmessage = function(event){//事件处理函数,用来处理后端的web worker传递过来的消息  
+                   document.getElementById("result").innerHTML=event.data;  
+               };
+           }else{  
+               document.getElementById("result").innerHTML="sorry,your browser does not support web workers";  
+           }  
+       }    
+       function endWorker(){  
+          w.terminate();//利用Worker对象的terminated方法,终止  
+          w=undefined;  
+       }
+	   // w.postMessage(5000);  向webworker线程发送消息
+    </script>  
+</body>  

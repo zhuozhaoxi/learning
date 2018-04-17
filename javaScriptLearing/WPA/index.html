@@ -1,0 +1,20 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>WPA测试</title>
+		<link href="main.css" type="text/css" rel="stylesheet"/></link>
+	</head>
+	<body>
+		<h1>Hello world! Version 2.0</h1>
+		<!-- 参考来源 https://zhuanlan.zhihu.com/p/25459319 -->
+	</body>
+	<script>
+	  if (navigator.serviceWorker != null) {	// 查看浏览器是否支持
+		navigator.serviceWorker.register('sw.js')
+		.then(function(registration) {
+		  console.log('Registered events at scope: ', registration.scope);
+		});
+	  }
+	</script>
+</html>

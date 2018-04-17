@@ -15,6 +15,11 @@
 		// return Promise.resolve({name:'zhuozhaoxi'});
 		return new Promise(function(resolve,reject){
 			console.log('ajax begin');
+			setTimeout(function(){
+				console.log('ajax end');
+				resolve({ name : 'zx'});
+			},500);
+			/**
 			$.ajax({
 				method: 'get',
 				dataType: 'json',
@@ -27,7 +32,8 @@
 					console.log('ajax end');
 					reject(err);
 				}
-			});	
+			});
+			**/
 		})
 	}
 
