@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>双飞翼布局</title>
+		<style>
+			*{
+				margin:0;
+				padding: 0
+			}
+			.main{
+				float: left;
+				width: 100%;
+
+			}
+			.main .main-content{
+				margin: 0 210px;
+				background-color: rgba(33, 114, 214, 0.8);
+				height: 500px
+			}
+			.left{
+				width: 200px;
+				float: left;
+				background-color: rgba(255, 82, 0, 0.8);
+				margin-left: -100%;
+				height: 200px
+
+			}
+			.right{
+				width: 200px;
+				height: 200px;
+				margin-left: -200px;
+				float: left;
+				background-color: rgba(90, 243, 151, 0.8);
+			}
+		</style>
+	</head>
+	<body>
+	<div class="main">
+		<div class="main-content">main content</div>
+	</div>
+	<div class="left">left</div>
+	<div class="right">right</div>
+	<!-- 流式布局，由于块mian 的width是100%; left right 会被挤到第二列，  
+		但是  流布局里面它们上个是连续的， 所以当.left 想左偏移整个屏幕的宽度时，.left 会从视觉上第二行最左的偏移到第一行最左 -->
+	</body>
+</html>
