@@ -23,9 +23,9 @@ clients: 表示 Service Worker 接管的页面
  *
  * 关于Promise.race(iterable) 方法返回一个 Promise 实例， 将iterable中一个完成的结果 作为返回结果
  */
-
-var cacheStorageKey = 'minimal-pwa-1';  // 缓存名称
-
+var time = 1;
+var cacheStorageKey = 'minimal-pwa-2';  // 缓存名称
+console.log('Service Worker',self);
 var cacheList = [
   '/',
   "index.html",
@@ -34,12 +34,13 @@ var cacheList = [
 ];
 
 self.addEventListener('install', e => {
-  e.waitUntil(
-    caches.open(cacheStorageKey)
-    .then(cache => cache.addAll(cacheList))
-    .then(() => self.skipWaiting())
+	console.log('install');
+  	e.waitUntil(
+    	caches.open(cacheStorageKey)
+    	.then(cache => cache.addAll(cacheList))
+    	.then(() => self.skipWaiting())
 	// 这一段的意思是，  创建一个名为cacheStorageKey的缓存，其中包含了cacheList的所有文件
-  )
+  	)
 })
 // 调用 self.skipWaiting() 方法是为了在页面更新的过程当中, 新的 Service Worker 脚本能立即激活和生效。
 // 否则 则必须等待旧的Service Worker关闭，  1、时间到期自动关闭。 2、用户跳转界面或关闭浏览器（关闭浏览器后是否关闭Service Worker是由浏览器自己决定的）
@@ -47,17 +48,46 @@ self.addEventListener('install', e => {
 
 // 1、处理动态缓存
 // 网页抓取资源的过程中, 在 Service Worker 可以捕获到 fetch 事件, 可以编写代码决定如何响应资源的请求
+
 self.addEventListener('fetch', function(e) {
-  e.respondWith(
-    caches.match(e.request).then(function(response) {
-      if (response != null) {
-		console.log("使用缓存："+e.request.url);
-        return response					// 这是一个响应结果的对象
-      }
-	  console.log("发起请求："+e.request.url);
-      return fetch(e.request.url)		// 这是一个promise
-    })
-  )
+	// 优先使用缓存的情况
+	/**
+  	e.respondWith(
+    	caches.match(e.request).then(function(response) {
+			if (response != null) {
+				console.log("使用缓存：",e.request.url,'时间：',time++);
+				return response					// 这是一个响应结果的对象
+			}
+			console.log("发起请求：",e.request.url,'时间：',time++);
+			return fetch(e.request.url)		// 这是一个promise
+    	})
+  	)
+	**/
+	// 优先使用网络请求，当网络请求不通时， 使用缓存
+	e.respondWith(
+		fetch(e.request.url)
+		.then(httpRes => {
+			if(!httpRes || httpRes.status !== 200 ){		// 请求失败， 返回失败结果
+				return httpRes
+			}
+			// 请求成功，缓存
+			var responseClone = httpRes.clone();
+			caches.open(cacheStorageKey)
+			.then(function (cache) {
+				return cache.delete(e.request)
+						.then(function() {
+							cache.put(e.request, responseClone);
+						});
+			});
+
+			return httpRes;
+		}).catch((err)=>{
+			// 网络不通，会走到这里
+			//return Promise.resolve(null);
+			console.error(err);
+			return caches.match(e.request);
+		})
+	);
 })
 
 // caches.keys() 是一个promise对象。 一个获取缓存列表的promise
@@ -89,8 +119,7 @@ self.addEventListener('activate', function(e) {
 		Promise.all(
 			[cacheDeletePromise]
 		).then((r) => {
-			console.log('sw end');
-			console.log(r);
+			console.log('sw end',r);
 			return self.clients.claim()
 		})
 	);
