@@ -4,6 +4,7 @@
 		<meta charset="UTF-8">
 		<title>WPA测试</title>
 		<link href="main.css" type="text/css" rel="stylesheet"/></link>
+		<link rel="manifest" href="manifest.json" />
 	</head>
 	<body>
 		<h1>Hello world! Version 2.0</h1>
@@ -13,7 +14,8 @@
 	  if (navigator.serviceWorker != null) {	// 查看浏览器是否支持
 		navigator.serviceWorker.register('sw.js')
 		.then(function(registration) {
-		  console.log('Registered events at scope: ', registration.scope);
+			console.log(registration);
+			console.log('Registered events at scope: ', registration.scope);
 		});
 	  }
 	</script>

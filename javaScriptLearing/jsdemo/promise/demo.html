@@ -58,7 +58,6 @@
 	// Object {name: "zhuozhaoxi"}
 	getUserName().then(function(data){
 		return someThing(data);
-		// 这里并没有返回一个promise对象
 	}).then(function(data){
 		console.log('test end:'+data);
 	}).catch(function(err){
@@ -88,6 +87,23 @@
 	// Promise.resolve('foo').then(Promise.resolve('bar')).then(function (result) {
 	// 	console.log(result);
 	// });
+
+
+	/**
+	 * 时序组合可以使用一些优雅的javascript形式：
+
+	 [func1, func2].reduce((p, f) => p.then(f), Promise.resolve());
+	 通常，我们递归调用一个由异步函数组成的数组时相当于一个promise链式：Promise.resolve().then(func1).then(func2);
+
+	 我们也可以写成可复用的函数形式，这在函数式编程中极为普遍：
+
+	 let applyAsync = (acc,val) => acc.then(val);
+	 let composeAsync = (...funcs) => x => funcs.reduce(applyAsync, Promise.resolve(x));
+	 composeAsync函数将会接受任意数量的函数作为其参数，并返回一个新的函数，该函数接受一个通过composition pipeline传入的初始值。
+	 这对我们来说非常有益，因为任一函数可以是异步??或同步的，它们能被保证按顺序执行：
+	 let transformData = composeAsync(func1, asyncFunc1, asyncFunc2, func2);
+	 transformData(data);
+	 */
 </script>
 </body>
 </html>

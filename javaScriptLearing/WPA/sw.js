@@ -4,14 +4,34 @@ caches: 表示缓存
 skipWaiting: 表示强制当前处在 waiting 状态的脚本进入 activate 状态
 clients: 表示 Service Worker 接管的页面
 */
-var cacheStorageKey = 'minimal-pwa-2';  // 缓存名称
+
+/**
+ * Promise 知识补充。
+ * .then和.catch方法本身会返回一个Promise对象，所以 支持链式调用。
+ * 在.then(fn)中 fn函数返回的结果会作为下一个链式调用的参数， 如果 返回一个Promise对象，则后续的.then.catch链式调用会等待这个Promise返回结果(resolve,reject)
+ * 逻辑类似下面:
+ * then = function(fn){
+ * 		var r = fn();;
+ * 		if (typeof r === 'Promise'){
+ * 			return r;
+ * 		}
+ * 		return Promise.resolve(r);
+ * }
+ * iterable 是一个可迭代对象
+ * 关于Promise.all(iterable) 方法返回一个 Promise 实例，此实例在 iterable 参数内所有的 promise 都“完成（resolved）” 或 参数中不包含 promise 时回调完成（resolve）；
+ * 如果参数中  promise 有一个失败（rejected），此实例回调失败（rejecte），失败原因的是第一个失败 promise 的结果。 成功，则返回一个包含所有promise 结果的数组
+ *
+ * 关于Promise.race(iterable) 方法返回一个 Promise 实例， 将iterable中一个完成的结果 作为返回结果
+ */
+
+var cacheStorageKey = 'minimal-pwa-1';  // 缓存名称
 
 var cacheList = [
   '/',
   "index.html",
   "main.css",
   "1.png"
-]
+];
 
 self.addEventListener('install', e => {
   e.waitUntil(
@@ -22,6 +42,7 @@ self.addEventListener('install', e => {
   )
 })
 // 调用 self.skipWaiting() 方法是为了在页面更新的过程当中, 新的 Service Worker 脚本能立即激活和生效。
+// 否则 则必须等待旧的Service Worker关闭，  1、时间到期自动关闭。 2、用户跳转界面或关闭浏览器（关闭浏览器后是否关闭Service Worker是由浏览器自己决定的）
 
 
 // 1、处理动态缓存
@@ -41,23 +62,58 @@ self.addEventListener('fetch', function(e) {
 
 // caches.keys() 是一个promise对象。 一个获取缓存列表的promise
 self.addEventListener('activate', function(e) {
-  e.waitUntil(
-    Promise.all(
-      caches.keys().then(cacheNames => {
-		  console.log(cacheNames);
-        return cacheNames.map(name => {
-          if (name !== cacheStorageKey) {
-            return caches.delete(name)			// return promise
-          }else{
-			return new Promise(function(resolve,reject){
-				resolve();
-			});
-		  }
-        })
-      })
-    ).then(() => {
-      return self.clients.claim()
-    })
+	console.log('Activate event');
+//	console.log('Promise all', Promise, Promise.all);
+
+	var cacheDeletePromise = caches.keys().then(cacheNames => {
+		console.log('cacheNames',cacheNames, cacheNames.map);
+		// 跟下面的对比 这里多了个Promise.all 所以.then self.clients.claim() 会等待这里的缓存删除完毕,
+		//then接收到的参数也不一样，这里是[[true,'cache']]。 下面是 [[Promise,Promise]]
+		return Promise.all(
+			cacheNames.map(name => {
+				if(name !== cacheStorageKey){
+//					console.log('caches.delete', caches.delete);
+					console.log('cache delete name: ', name);
+					var deletePromise = caches.delete(name);
+					console.log('cache delete result: ', deletePromise);
+					return deletePromise;
+				}else{
+					return Promise.resolve('cache');
+				}
+			})
+		)
+	});
+	console.log('cacheDeletePromises: ', cacheDeletePromise);
+
+	e.waitUntil(
+		Promise.all(
+			[cacheDeletePromise]
+		).then((r) => {
+			console.log('sw end');
+			console.log(r);
+			return self.clients.claim()
+		})
+	);
+	// claim 通知客户端，由新的Service Worker 接管
+
+	/**
+  	e.waitUntil(
+    	Promise.all(
+			[caches.keys().then(cacheNames => {
+				console.log(cacheNames);
+				return cacheNames.map(name => {
+					if (name !== cacheStorageKey) {
+						return caches.delete(name)			// return promise
+					}else{
+						return Promise.resolve();
+					}
+				})
+		  	})]
+		).then(() => {
+		  return self.clients.claim()
+		})
+	)
+	**/
 })
 // 在新安装的 Service Worker 中通过调用 self.clients.claim() 取得页面的控制权, 这样之后打开页面都会使用版本更新的缓存
 
