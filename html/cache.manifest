@@ -1,0 +1,11 @@
+CACHE MANIFEST
+# v1.7
+CACHE:      #标识出哪些文件需要缓存，可以是相对路径也可以是绝对路径
+    a.css
+    a.js
+    offline.js
+    offline.html
+NETWORK:    #这一部分是要绕过缓存直接读取的文件，可以使用通配符＊。
+    *
+FALLBACK:   #当找不到某个文件时，使用另外一个文件代替。 *.js,*.html
+    c.js offline.js
