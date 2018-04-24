@@ -1,0 +1,19 @@
+﻿mysql：
+exists 不一定比 in 快
+
+例如：表A（小表），表B（大表）
+
+1：
+select * from A where cc in (select cc from B) 效率低，用到了A表上cc列的索引；
+ 
+select * from A where exists(select cc from B where cc=A.cc) 效率高，用到了B表上cc列的索引。 
+相反的
+
+2：
+select * from B where cc in (select cc from A) 效率高，用到了B表上cc列的索引；
+ 
+select * from B where exists(select cc from A where cc=B.cc) 效率低，用到了A表上cc列的索引。
+
+not exists 一定比 not in 快， 原因：not in 完全没有用到索引。 not exists 的子查询依然能用到表上的索引。
+
+https://www.cnblogs.com/beijingstruggle/p/5885137.html

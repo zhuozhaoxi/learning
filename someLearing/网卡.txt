@@ -1,0 +1,39 @@
+﻿*************   centos 7 网卡启动不了问题。 **************************
+
+查看网卡配置
+ifconfig
+
+vi /etc/sysconfig/network-scripts/ifcfg-xxxx
+1、确认
+ONBOOT=yes  # 开机自启动
+重新启动 service network restart
+
+2、mac地址不一致
+修改 /etc/udev/rules.d/70-persistent-net.rules文件的MAC地址和 /etc/sysconfig/network-scripts/ifcfg-eth0一样就好了。
+centos 7中 没有/etc/udev/rules.d/70-persistent-net.rules，所以修改ifcfg-xxxx文件，修改HWADDR地址。
+
+查看本机mac地址的方法 ip addr
+类似 ： link/ether 00:0f:19:10:12:f1 brd ff:ff:ff:ff:ff:ff
+mac地址为 00:0f:19:10:12:f1
+
+重新启动 service network restart
+
+
+3、如果是虚拟机的情况下，还是启动失败，可以考虑修改虚拟机的网络连接方式，使用NAT方式
+
+
+命令：
+ifup ens33 启动ens33 网卡
+ifdown xxxxxxxxxx
+
+
+*********   ping baidu.com  name or service not known 问题解决 ***************
+
+是由于没有配置dns域名解析
+ping 命令是属于ICMP协议，ping ip地址有效。若直接ping网址（域名），需要配置DNS。
+编辑添加nameserver如下：
+vi /etc/resolv.conf
+nameserver 8.8.8.8    #（Google的公共DNS服务）
+nameserver 8.8.4.4    #（Google的公共DNS服务）
+
+
