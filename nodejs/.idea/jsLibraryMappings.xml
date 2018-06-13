@@ -2,7 +2,7 @@
 <project version="4">
   <component name="JavaScriptLibraryMappings">
     <file url="file://$PROJECT_DIR$" libraries="{nodejs node_modules}" />
-    <file url="PROJECT" libraries="{Node.js v10.3.0 Core Modules}" />
+    <file url="PROJECT" libraries="{Node.js v10.3.0 Core Modules, nodejs node_modules}" />
     <includedPredefinedLibrary name="Node.js Globals" />
   </component>
 </project>
