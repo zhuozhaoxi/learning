@@ -1,7 +1,7 @@
 const path = require("path");
-publishPath = path.resolve('./publish');
+publishPath = path.resolve('./public');
 pathName = "/";
-console.log(path.resolve('./publish'));
+console.log(path.resolve('./public'));
 
 let mPath = path.join(publishPath, pathName);
 

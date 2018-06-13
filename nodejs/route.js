@@ -1,6 +1,6 @@
 const path = require("path");
 const fs = require("fs");
-const publishPath = path.resolve("./publish");
+const publishPath = path.resolve("./public");
 const config = {
     '/hello' : './hello'
 };
