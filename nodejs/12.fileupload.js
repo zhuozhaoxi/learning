@@ -3,7 +3,10 @@ var app = express();
 var fs = require("fs");
 
 var bodyParser = require('body-parser');
+// node.js 中间件，用于处理 JSON, Raw, Text 和 URL 编码的数据
+
 var multer = require('multer');
+//  node.js 中间件，用于处理 enctype="multipart/form-data"（设置表单的MIME编码）的表单数据。
 
 app.use(express.static('public'));  // 使静态文件可以被访问
 app.use(bodyParser.urlencoded({ extended : false }));

@@ -40,6 +40,11 @@ app.get('/process_get', function (req, res) {
     res.end(JSON.stringify(response));
 });
 
+app.get('/user/:id', function (req, res) {
+    //req.params.id
+    res.end( JSON.stringify(req.params.id));
+});
+
 var bodyParser = require('body-parser');
 // 创建 application/x-www-form-urlencoded 编码解析
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
