@@ -1,0 +1,25 @@
+npm list -g --depth=0
+
+// 锁定安装版本
+npm i express --save --save-exact (安装 express，同时将 "express": "4.14.0" 写入 dependencies )
+
+
+npm删除模块
+
+全局模块
+npm uninstall -g <package>
+
+本地模块
+npm uninstall 模块 
+删除本地模块时你应该思考的问题：是否将在package.json上的相应依赖信息也消除？
+npm uninstall 模块：删除模块，但不删除模块留在package.json中的对应信息
+npm uninstall 模块 --save 删除模块，同时删除模块留在package.json中dependencies下的对应信息
+npm uninstall 模块 --save-dev 删除模块，同时删除模块留在package.json中devDependencies下的对应信息
+
+
+D:\Program Files\nodejs\node_global\node_modules
+
+
+npm源管理
+nrm ls
+nrm use xxx

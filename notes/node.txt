@@ -1,0 +1,69 @@
+setTimeout(()=>{ $('#clockLink button').click() }, 1.5 * 60 * 60 * 1000)
+
+exports 和 module.exports 的区别：
+1、module.exports 初始值为一个空对象 {}
+2、exports 是指向的 module.exports 的引用
+3、require() 返回的是 module.exports 而不是 exports
+
+
+
+各种插件
+1、express	路由监听的插件
+
+// req.query: 解析url中的queryString
+
+// req.params: 解析url中的占位符,如:name
+
+// req.body: 解析后的请求体， 需使用相关的模块,如body-parser
+
+// res.status() 设置状态码
+
+2、supervisor	实时更新代码效果，不用重启程序。 全局安装 npm i supervisor -g
+使用 supervisor index 代替 nodex index 启动程序
+监听当前目录下 node 和 js 后缀的文件
+
+
+3、ejs		模板引擎，与express集成良好
+语法 	<%= code   %>	显示转义后的html内容
+	<%- code  %>	显示原始html内容
+	<%  code %>	运行js代码，不输出
+
+设置express使用ejs模板引擎  app.set("view engine", 'ejs'); app.set("views", xxx); 设置存放模板文件的目录
+
+4、express中间件的使用
+通过app.use([matchPath],fn) 加载中间件。
+中间件按照 文件中加载的顺序执行，直到匹配到指定路由返回结果
+中间件中，可以通过send，或者end(); 提前结束请求。
+
+5、ejs模板
+<% code %>：运行 JavaScript 代码，不输出
+<%= code %>：显示转义后的 HTML内容
+<%- code %>：显示原始 HTML 内容
+
+express: web 框架
+express-session: session 中间件
+connect-mongo: 将 session 存储于 mongodb，结合 express-session 使用
+connect-flash: 页面通知的中间件，基于 session 实现
+ejs: 模板
+express-formidable: 接收表单及文件上传的中间件
+config-lite: 读取配置文件
+marked: markdown 解析
+moment: 时间格式化
+mongolass: mongodb 驱动
+objectid-to-timestamp: 根据 ObjectId 生成时间戳
+sha1: sha1 加密，用于密码加密
+winston: 日志
+express-winston: express 的 winston 日志中间件
+
+
+关于 config-lite:
+会根据环境变量（NODE_ENV）的不同加载 config 目录下不同的配置文件。
+如果不设置 NODE_ENV，则读取默认的 default 配置文件
+如果设置了 NODE_ENV，则会合并指定的配置文件和 default 配置文件作为配置，
+支持 .js、.json、.node、.yml、.yaml 后缀的文件。
+
+还支持冒泡查找配置，即从传入的路径开始，从该目录不断往上一级目录查找 config 目录，直到找到或者到达根目录为止。
+
+NODE_ENV=test node app 
+config-lite 会依次降级查找 config/test.js、config/test.json、config/test.node、config/test.yml、config/test.yaml 
+并合并 default 配置

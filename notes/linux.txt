@@ -1,0 +1,71 @@
+进程查看
+ps -ef | grep xxxx
+
+
+// 动态查看文件更改
+tail -f
+
+
+
+系统内存不足时  no space left on device
+// 查看磁盘内存占用情况
+df -h
+
+// 查看磁盘iNode节点占用情况
+df -ih
+
+
+// 查看文件所占内存大小
+du -sh *
+
+// 一般是找到比较大的日志文件， 进行删除
+
+// 进一步查找问题。 
+// 如果文件正在被进程使用， 并不会被立即删除， 打上deleted标记并等进程执行完毕后删除
+// 通过以下命令查找
+slot | grep deleted
+
+
+1、如何生成密钥，并使用私钥登录linux服务器
+
+ssh-keygen -t rsa
+-t  rsa    是指采用rsa加密方式的公钥/私钥对。
+第一行:提示公钥私钥存放地址
+第二行:给私钥设置密码，回车则无密码
+第三行:确认密码
+
+生成完毕后，进入对应的目录 如: /root/.ssh/
+将公钥追加到authorized_keys文件中
+cat id_rsa.pub >> authorized_keys
+chmod 600 authorized_keys
+
+下载私钥 id_rsa
+
+最后  配置文件中 /etc/ssh/sshd_config
+设置 PasswordAuthentication yes
+
+总结：在配置过程中，忘记cat id_rsa.pub >> authorized_keys，会导致下载私钥之后也不能登录服务器。
+
+
+2、重启gitlab-runner
+
+第一种 使用服务
+install、uninstall、start、stop、restart、status这6个命令就是和服务相关的。
+//先stop停止服务
+gitlab-runner  stop
+
+// 卸载已经加载的runner配置， 
+gitlab-ci-multi-runner uninstall 
+
+// 重新加载
+gitlab-ci-multi-runner install  --service gitlab-runner --user=gitlab-runner --config /etc/gitlab-runner/config.toml --working-directory /home/gitlab-runner
+
+// 重新启动
+gitlab-ci-multi-runner start // 在后台启动
+
+// 使用verify 确认启动情况
+
+第二种
+ // 放到了前台执行
+gitlab-ci-multi-runner run --config 配置文件路径 --service 指定服务别名 --working-directory 批量运行服务的工作目录 --user 以什么用户权限运行runner
+--syslog 如果指定了这个选项，则把日志记录到系统日志
