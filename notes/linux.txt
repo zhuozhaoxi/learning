@@ -46,6 +46,9 @@ chmod 600 authorized_keys
 
 总结：在配置过程中，忘记cat id_rsa.pub >> authorized_keys，会导致下载私钥之后也不能登录服务器。
 
+免密登录
+将A服务器的公钥增加到B服务器的authorized_keys中
+A可以免密登录B
 
 2、重启gitlab-runner
 
@@ -69,3 +72,6 @@ gitlab-ci-multi-runner start // 在后台启动
  // 放到了前台执行
 gitlab-ci-multi-runner run --config 配置文件路径 --service 指定服务别名 --working-directory 批量运行服务的工作目录 --user 以什么用户权限运行runner
 --syslog 如果指定了这个选项，则把日志记录到系统日志
+
+
+3、gitlab 指定服务器免密码， 将指定服务器的公钥 添加到gitlab的仓库中即可
