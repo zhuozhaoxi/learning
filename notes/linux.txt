@@ -89,11 +89,11 @@ source ~/.bashrc
 shell中的普通变量很简单， 仅能被当前shell访问
 
 4.3 .bashrc 和 /etc/profile的区别 参考： https://blog.csdn.net/m0_37739193/article/details/72638074
-profile: 所有用户的登录shell
+bash_profile/profile: 所有用户的登录shell
 bashrc: 针对用户打开的非登陆shell
 
-/etc目录下为全体用户
-~/ 目录下为当前用户
+/etc目录下为全体用户生效
+~/ 目录下为当前用户生效
 
 /etc/profile: 此文件为系统的每个用户设置环境信息,当用户第一次登录时,该文件被执行.并从/etc/profile.d目录的配置文件中搜集shell的设置.
 /etc/bashrc:  为每一个运行bash shell的用户执行此文件.当bash shell被打开时,该文件被读取.
