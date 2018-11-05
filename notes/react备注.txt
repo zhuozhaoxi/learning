@@ -1,0 +1,31 @@
+1、组件名称必须以大写字母开头。
+例如，<div /> 表示一个DOM标签，但 <Welcome /> 表示一个组件，并且在使用该组件时你必须定义或引入它。
+
+2、JSX语法中 某些html属性
+例如，class 变成了 className，而 tabindex 则对应着 tabIndex。
+
+3、不应该依靠当前值来计算下一个状态的值，因为this.props和this.state可能是异步更新的
+
+必须如此的话，setState方法 接收一个函数而不是一个对象
+this.setState((prevState, props) => ({
+  counter: prevState.counter + props.increment
+}));
+
+
+4、事件处理，跟传统html差不多 onclick=> onClick。 事件绑定属性变成了驼峰写法
+
+事件中的this指向问题， react中需要手动绑定。 
+在constructor中
+// This binding is necessary to make `this` work in the callback
+this.handleClick = this.handleClick.bind(this);
+
+
+5、做if判断
+{
+	{unreadMessages.length > 0 &&
+        	<h2>
+          You have {unreadMessages.length} unread messages.
+        </h2>
+      }
+
+{ conditoin ? component1 : component2 }

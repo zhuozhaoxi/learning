@@ -1,0 +1,6 @@
+生成100长度的数组
+
+Array.apply(null,{length:100})
+主要是自动转换， 会将{length:100}这个类数组对象 转换成 数组
+
+Array.apply(null,[...undefined*100])
