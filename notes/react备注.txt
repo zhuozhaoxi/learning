@@ -29,3 +29,35 @@ this.handleClick = this.handleClick.bind(this);
       }
 
 { conditoin ? component1 : component2 }
+
+JSX允许在大括号中嵌入任何表达式， 所以，上述大括号中也可以写Array.map等
+
+6、form表单
+react中数据是单向绑定的，即从数据 => dom元素
+所以inut,select,checkbox等受控组件上 需要监听onChange，然后调用setState，达到dom输入和数据的一致
+
+所以，受控组件 是 表单数据由react组件处理。
+如果让表单数据由dom处理时， 替代方案为使用非受控组件
+
+通过ref从dom获取表单值，支持设置默认值: defaultValue或者defaultChecked
+<input type="text" ref={(input) => this.input = input} />
+
+特殊：
+<input type="file" />始终是一个不受控制的组件，因为他的值只能为用户设置
+ref={input => { this.fileInput = input; }}  => this.fileInput.files[0].name
+
+7、jsx组合(vue中slot)
+组件标签中间的自定义内容，默认是在组件的 props.children中。
+有多个自定义入口的情况下
+(
+    <SplitPane
+      left={
+        <Contacts />
+      }
+      right={
+        <Chat />
+      } />
+  ) => props.left|props.right
+
+8、一般使用不到继承
+如果要在组件之间复用 UI 无关的功能，我们建议将其提取到单独的 JavaScript 模块中。这样可以在不对组件进行扩展的前提下导入并使用该函数、对象或类
