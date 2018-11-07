@@ -39,12 +39,15 @@ react中数据是单向绑定的，即从数据 => dom元素
 所以，受控组件 是 表单数据由react组件处理。
 如果让表单数据由dom处理时， 替代方案为使用非受控组件
 
-通过ref从dom获取表单值，支持设置默认值: defaultValue或者defaultChecked
-<input type="text" ref={(input) => this.input = input} />
-
 特殊：
 <input type="file" />始终是一个不受控制的组件，因为他的值只能为用户设置
 ref={input => { this.fileInput = input; }}  => this.fileInput.files[0].name
+
+通过函数式ref从dom获取表单值，支持设置默认值: defaultValue或者defaultChecked
+<input type="text" ref={(input) => this.input = input} />  => this.input.current指向input dom元素
+React v16.3 引入 React.createRef()
+constructor中 => this.input = React.createRef();
+render中 =>	<div ref={this.input} />;
 
 7、jsx组合(vue中slot)
 组件标签中间的自定义内容，默认是在组件的 props.children中。
@@ -59,5 +62,30 @@ ref={input => { this.fileInput = input; }}  => this.fileInput.files[0].name
       } />
   ) => props.left|props.right
 
+通常情况下，插入 JSX 中的 JavaScript 表达式将被认作字符串、React 元素或这些内容的列表。
+然而，props.children 可以像其它属性一样传递任何数据，而不仅仅是 React 元素。
+甚至可以是一个函数，如下，props.children接收了一个函数
+<Repeat numTimes={10}>
+      {(index) => <div key={index}>This is item {index} in the list</div>}
+</Repeat>
+
+特殊值
+false、null、undefined 和 true 都是有效的子代，但它们不会直接被渲染， 想要渲染需转换成字符串
+
 8、一般使用不到继承
 如果要在组件之间复用 UI 无关的功能，我们建议将其提取到单独的 JavaScript 模块中。这样可以在不对组件进行扩展的前提下导入并使用该函数、对象或类
+
+9、关于函数式组件
+没有生命周期，没有state，不能在函数式组件上使用 ref 属性，因为它们没有实例，但是可以在函数式组件内部使用 ref，只要它指向一个 DOM 元素或者 class 组件
+
+10、通过React.forwardRef函数来获取子组件的元素
+React.forwardRef接收一个函数，该函数接收两个参数，props，ref（父组件的ref值），返回一个可渲染的结果
+
+11、关于HOC（高阶组件） （备注：这点vue好像做不来）
+其实就是一个函数，接收一个组件作为参数，组合一些功能返回另外一个组件
+
+12、react可以通过Protals将渲染结果 渲染到父节点以外的地方
+
+13、react没有watch
+组件本身的state改变由组件本身掌控，所以找到对应的地方添加状态更改后的需要对应执行的操作。
+对于props, 可以在组件的生命周期componentWillReceiveProps()|getDerivedStateFromProps()中处理

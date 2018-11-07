@@ -12,3 +12,8 @@ class{
 		top: 0px;
 	}
 }
+
+
+利用after清除浮动
+.clearfix:after {content:"."; display:block; height:0; visibility:hidden; clear:both; }
+.clearfix { *zoom:1; }
