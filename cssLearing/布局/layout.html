@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <title>常用布局</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="./layout.css">
+</head>
+<body>
+    <div class="container">
+        <section class="section-wrap">
+            <div class="demo">
+                <p class="title">垂直水平居中：table-cell</p>
+                <p class="summary">适用范围：父元素position值不为absolute和fixed，子元素定宽</p>
+                <p class="summary">兼容性：IE8及以上</p>
+                <div class="middle">
+                    <div class="table-cell__parent">
+                        <div class="table-cell__box">
+                            table-cell
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 利用table-cell的vertical-align实现垂直居中, 宽度自适应特性实现水平居中 -->
+            <!--position:absolute; 跟display:table-cell 是冲突的; 原因: 前者会设置display:block-->
+            <style class="code" contenteditable="true">
+                .table-cell__parent{
+                    width: 100px;
+                    height: 100px;
+                    border: 1px solid;
+
+                    display: table-cell;
+                    vertical-align: middle;
+                }
+                .table-cell__box{
+                    width: 50px;
+                    height: 50px;
+                    border: 1px solid;
+                    background: red;
+
+                    margin: 0 auto;
+                }
+            </style>
+        </section>
+        <section class="section-wrap">
+            <div class="demo">
+                <p class="title">垂直水平居中：绝对定位+margin(或transform)</p>
+                <p class="summary">适用范围：基本适应所有情况，对元素的宽高也没要求，推荐使用</p>
+                <p class="summary">兼容性：transform兼容IE9，使用transform甚至能兼容IE7</p>
+                <div class="middle" style="height: 200px">
+                    <div class="absolute__parent">
+                        <div class="absolute__box margin">
+                            absolute+margin
+                        </div>
+                    </div>
+                    <div class="absolute__parent">
+                        <div class="absolute__box transform">
+                            absolute+transform
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <style class="code" contenteditable="true">
+                .absolute__parent{
+                    width: 100px;
+                    height: 100px;
+                    border: 1px solid;
+
+                    position: relative;
+                }
+                .absolute__box{
+                    width: 50px;
+                    height: 50px;
+                    border: 1px solid;
+                    background: red;
+
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    /*margin: -25px 0 0 -25px;*/
+                    /* 这里面唯一兼容IE7的 */
+                    /* 不能用margin百分比值,因为 百分比是相对于父元素计算的，并不是元素本身 */
+
+                    /*IE9及以上, 改进 translate 更灵活，适应不同的宽度*/
+                    /*transform: translate(-50%,-50%);*/
+                }
+                .absolute__box.margin{
+                    margin: -25px 0 0 -25px;
+                }
+                .absolute__box.transform{
+                    transform: translate(-50%,-50%);
+                }
+            </style>
+        </section>
+        <section class="section-wrap">
+            <div class="demo">
+                <p class="title">垂直水平居中：绝对定位+流动性宽高</p>
+                <p class="summary">适用范围：子元素定宽定高</p>
+                <p class="summary">兼容性：兼容IE8及以上</p>
+                <div class="middle">
+                    <div class="absolute-flow__parent">
+                        <div class="absolute-flow__box">
+                            absolute+flow
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <style class="code" contenteditable="true">
+                .absolute-flow__parent{
+                    width: 100px;
+                    height: 100px;
+                    border: 1px solid;
+
+                    position: relative;
+                }
+                .absolute-flow__box{
+                    width: 50px;
+                    height: 50px;
+                    border: 1px solid;
+                    background: red;
+
+                    position: absolute;
+                    /* left/right 同时设置时，宽度自适应， top/bottom同时设置时，高度自适应 */
+                    left: 0;right: 0;top: 0;bottom: 0;
+                    margin: auto;
+                }
+            </style>
+        </section>
+        <section class="section-wrap">
+            <div class="demo">
+                <p class="title">垂直水平居中：text-align + vertical-align</p>
+                <p class="summary">适用范围：父元素font-size和::after可修改的情况，对元素宽高无要求</p>
+                <p class="summary">兼容性：兼容IE9及以上</p>
+                <div class="middle">
+                    <div class="double-align__parent">
+                        <div class="double-align__box">
+                            align
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <style class="code" contenteditable="true">
+                .double-align__parent{
+                    width: 100px;
+                    height: 100px;
+                    border: 1px solid;
+
+                    text-align: center;
+                    font-size: 0;
+                }
+
+                /* 添加100%高度的不可见内联元素，做vertical-align对齐*/
+                .double-align__parent::after{
+                    content: '';
+                    display: inline-block;
+                    height: 100%;
+                    vertical-align: middle;
+                }
+
+                .double-align__box{
+                    width: 50px;
+                    height: 50px;
+                    border: 1px solid;
+                    background: red;
+
+                    font-size: 16px;
+                    display: inline-block;
+                    vertical-align: middle;
+                }
+            </style>
+        </section>
+        <section class="section-wrap">
+            <div class="demo">
+                <p class="title">双飞翼布局：左右定宽中间自适应</p>
+                <p class="summary">兼容性：ie7以上</p>
+                <p class="summary">拓展：一般会加上3侧等高要求，padding-bottom和margin-bottom负值配合</p>
+                <div class="layout-wrap">
+                    <div class="main">
+                        <div class="main-content">main content</div>
+                    </div>
+                    <div class="left">left left left left left left left left</div>
+                    <div class="right">right</div>
+                </div>
+            </div>
+            <!-- 直接在main上使用padding也能达到效果，能少一层标签。但是主体的实际背景包含了左右两边的位置，background-color等属性会影响到 -->
+            <style class="code" contenteditable="true">
+                .layout-wrap{
+                    width: 100%;
+                    border: 1px solid black;
+                    overflow: hidden;
+                }
+                .main{
+                    float: left;
+                    width: 100%;
+                }
+                .main .main-content{
+                    margin: 0 210px;
+                    background-color: rgba(33, 114, 214, 0.8);
+                    /* 三侧等高 */
+                    margin-bottom: -9999px !important;
+                    padding-bottom: 9999px;
+                }
+                .left{
+                    width: 200px;
+                    float: left;
+                    background-color: rgba(255, 82, 0, 0.8);
+                    margin-left: -100%;
+                    /* 三侧等高 */
+                    margin-bottom: -9999px !important;
+                    padding-bottom: 9999px;
+                }
+                .right{
+                    width: 200px;
+                    height: 200px;
+                    margin-left: -200px;
+                    float: left;
+                    background-color: rgba(90, 243, 151, 0.8);
+                }
+            </style>
+        </section>
+    </div>
+</body>
+</html>
