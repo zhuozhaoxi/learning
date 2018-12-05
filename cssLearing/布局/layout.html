@@ -174,11 +174,11 @@
                 <p class="summary">兼容性：ie7以上</p>
                 <p class="summary">拓展：一般会加上3侧等高要求，padding-bottom和margin-bottom负值配合</p>
                 <div class="layout-wrap">
-                    <div class="main">
+                    <div class="double-float-side__main">
                         <div class="main-content">main content</div>
                     </div>
-                    <div class="left">left left left left left left left left</div>
-                    <div class="right">right</div>
+                    <div class="double-float-side__left">left left left left left left left left</div>
+                    <div class="double-float-side__right">right</div>
                 </div>
             </div>
             <!-- 直接在main上使用padding也能达到效果，能少一层标签。但是主体的实际背景包含了左右两边的位置，background-color等属性会影响到 -->
@@ -188,18 +188,18 @@
                     border: 1px solid black;
                     overflow: hidden;
                 }
-                .main{
+                .double-float-side__main{
                     float: left;
                     width: 100%;
                 }
-                .main .main-content{
+                .double-float-side__main .main-content{
                     margin: 0 210px;
                     background-color: rgba(33, 114, 214, 0.8);
                     /* 三侧等高 */
                     margin-bottom: -9999px !important;
                     padding-bottom: 9999px;
                 }
-                .left{
+                .double-float-side__left{
                     width: 200px;
                     float: left;
                     background-color: rgba(255, 82, 0, 0.8);
@@ -208,12 +208,89 @@
                     margin-bottom: -9999px !important;
                     padding-bottom: 9999px;
                 }
-                .right{
+                .double-float-side__right{
                     width: 200px;
                     height: 200px;
                     margin-left: -200px;
                     float: left;
                     background-color: rgba(90, 243, 151, 0.8);
+                }
+            </style>
+        </section>
+        <section class="section-wrap">
+            <div class="demo">
+                <p class="title">Flex弹性盒子实现多列布局</p>
+                <p class="summary">兼容性：较差，IE10及以上。部分浏览器也不支持</p>
+                <p class="summary">注意：设为 Flex 布局以后，子元素的float、clear和vertical-align属性将失效</p>
+                <div class="flex-box">
+                    <div class="flex-box__fixed">left</div>
+                    <div class="flex-box__auto">main</div>
+                    <div class="flex-box__fixed">right</div>
+                </div>
+            </div>
+            <style class="code" contenteditable="true">
+                .flex-box{
+                    height: 300px;
+                    display: flex;
+                    /* 默认属性，就是这个值，让Flex容器的项目高度撑满整个容器*/
+                    align-items: stretch;
+                }
+
+                .flex-box__auto{
+                    background: blueviolet;
+                    flex: auto;
+                }
+
+                .flex-box__fixed{
+                    width: 100px;
+                    background: red;
+                    flex: none;
+                }
+            </style>
+        </section>
+        <section class="section-wrap">
+            <div class="demo">
+                <p class="title">Grid网格布局-二维布局</p>
+                <div class="grid-container">
+                    <div class="grid-item-a">header</div>
+                    <div class="grid-item-b">main</div>
+                    <div class="grid-item-c">sidebar</div>
+                    <div class="grid-item-d">footer</div>
+                </div>
+            </div>
+            <style class="code" contenteditable="true">
+                .grid-item-a{
+                    background: blue;
+                    grid-area: header;
+                }
+                .grid-item-b{
+                    background: red;
+                    grid-area: main;
+                }
+                .grid-item-c{
+                    background: yellow;
+                    grid-area: sidebar;
+                }
+                .grid-item-d{
+                    background: green;
+                    grid-area: footer;
+                }
+                .grid-container{
+                    width: 300px;
+                    height: 200px;
+                    display: grid;
+                    /* 定义列宽，auto时自动填充 */
+                    grid-template-columns: 50px 50px auto 50px;
+                    /* 定义行高，auto时自动填充 */
+                    grid-template-rows: 25% 100px auto;
+
+                    /* 用fr单位可以将容器分为几等份，例如下面分成三等份。可以和实际值混合使用*/
+                    /* grid-template-columns: 1fr 1fr 1fr; */
+
+                    /* 可视化布局， 英文逗号表示留空 */
+                    grid-template-areas: "header header header header"
+                    "main main . sidebar"
+                    "footer footer footer footer"
                 }
             </style>
         </section>
