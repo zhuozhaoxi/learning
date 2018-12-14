@@ -170,6 +170,36 @@
         </section>
         <section class="section-wrap">
             <div class="demo">
+                <p class="title">垂直水平居中：flex弹性盒子</p>
+                <div class="middle">
+                    <div class="flex-box__parent">
+                        <div class="flex-box__box">
+                            flex
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <style class="code" contenteditable="true">
+                .flex-box__parent{
+                    width: 100px;
+                    height: 100px;
+                    border: 1px solid;
+
+                    display: flex;
+                    justify-content: space-around;
+                    align-items: center;
+                }
+
+                .flex-box__box{
+                    width: 50px;
+                    height: 50px;
+                    border: 1px solid;
+                    background: red;
+                }
+            </style>
+        </section>
+        <section class="section-wrap">
+            <div class="demo">
                 <p class="title">双飞翼布局：左右定宽中间自适应</p>
                 <p class="summary">兼容性：ie7以上</p>
                 <p class="summary">拓展：一般会加上3侧等高要求，padding-bottom和margin-bottom负值配合</p>
