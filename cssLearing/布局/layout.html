@@ -10,7 +10,7 @@
         <section class="section-wrap">
             <div class="demo">
                 <p class="title">垂直水平居中：table-cell</p>
-                <p class="summary">适用范围：父元素position值不为absolute和fixed，子元素定宽</p>
+                <p class="summary">适用范围：父元素position值不为absolute和fixed，子元素定宽或百分比宽</p>
                 <p class="summary">兼容性：IE8及以上</p>
                 <div class="middle">
                     <div class="table-cell__parent">
@@ -45,7 +45,7 @@
             <div class="demo">
                 <p class="title">垂直水平居中：绝对定位+margin(或transform)</p>
                 <p class="summary">适用范围：基本适应所有情况，对元素的宽高也没要求，推荐使用</p>
-                <p class="summary">兼容性：transform兼容IE9，使用transform甚至能兼容IE7</p>
+                <p class="summary">兼容性：transform兼容IE9，使用margin甚至能兼容IE7</p>
                 <div class="middle" style="height: 200px">
                     <div class="absolute__parent">
                         <div class="absolute__box margin">
@@ -171,6 +171,8 @@
         <section class="section-wrap">
             <div class="demo">
                 <p class="title">垂直水平居中：flex弹性盒子</p>
+                <p class="summary">适用范围：基本所有情况</p>
+                <p class="summary">兼容性：兼容IE10及以上</p>
                 <div class="middle">
                     <div class="flex-box__parent">
                         <div class="flex-box__box">
