@@ -1,0 +1,83 @@
+<!Doctype html>
+<html>
+    <head>
+        <title>
+            css小测，左右两栏布局
+        </title>
+        <meta charset="utf8" />
+    </head>
+    <style>
+        div,dl,dt,dd{
+            padding: 0;
+            margin: 0;
+        }
+        div{
+            width: 300px;
+        }
+        /* 公共部分 */
+        dl {
+            line-height: 1.5;
+            margin: 0; padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+        }
+        dd {
+            word-break: break-all;
+            text-align: right;
+            margin-left: 0;
+        }
+        dd:empty::before {
+            content: '-';
+            color: #999;
+        }
+        /** absolute定位 */
+        /*
+        dl{
+            position: relative;
+        }
+        dt{
+            position: absolute;
+        }
+        dd{
+            margin-left: 5em;
+            text-align: right;
+        }
+        **/
+
+        /* float布局*/
+        /*
+        dt{
+            float: left;
+            width: 5em;
+        }
+        dd{
+            text-align: right;
+            overflow: hidden;
+        }
+        */
+
+        /* 直接使用margin实现 */
+        dd {
+            margin: -1.5em 0 0 5em;
+            text-align: right;
+        }
+    </style>
+    <body>
+        <div>
+            <dl>
+                <dt>手机系统</dt>
+                <dd>Android</dd>
+                <dt>登录方式</dt>
+                <dd>QQ</dd>
+                <dt>绑定时间</dt>
+                <dd>2019-04-15 15:20</dd>
+                <dt>绑定状态</dt>
+                <dd>有效</dd>
+                <dt>备注</dt>
+                <dd>这里有很长的一段备注，这里有很长的一段备注</dd>
+                <dt>备注</dt>
+                <dd>这里有很长的一段备注，这里有很长的一段备注</dd>
+            </dl>
+        </div>
+    </body>
+</html>

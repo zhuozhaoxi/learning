@@ -1,0 +1,82 @@
+<!Doctype html>
+<html>
+<head>
+    <title>
+        dom小测，dom元素操作
+    </title>
+    <meta charset="utf8" />
+</head>
+<body>
+    <div id="container" class="container">
+        <section>
+            <img src="" alt="示意图">
+            <div>
+                <img src="" alt="示意图1">
+                <img src="" alt="示意图2">
+                <img id="compare-img" src="" alt="示意图3">
+                <img src="" alt="示意图4">
+                <img src="" alt="示意图5">
+            </div>
+        </section>
+    </div>
+</body>
+<script>
+    //  1、点击页面，判断点击元素是不是container的子元素
+    //  2、点击页面，判断点击元素是不是img元素
+    //  3、如果同时满足1和2，则设置点击元素outline:2px solid；否则取消所有元素outline
+    //  4、如果在示意图3的前面，outline-color:red，后面则设置为green，自身则不设置；没有前后关系，设置outline-color:blue
+
+//    开始作答
+    var $container = document.querySelector("#container");
+    var $allImg = document.querySelectorAll('#container img');
+    var $compareImg = document.querySelector('#container #compare-img');
+    document.documentElement.addEventListener('click', function(e){
+        var target = e.target;
+        var isChild = $container.contains(target);
+        var isImg = target.tagName.toLowerCase() === 'img';
+        console.assert(isChild, "不是container的子元素");
+        console.assert(isImg, "不是img元素");
+
+        // 3、
+        if(!isChild || !isImg){
+            $allImg.forEach(function($img){
+                $img.style.outline = 'none';
+            });
+            return false;
+        }
+        target.style.outline = "2px solid";
+        // 4、
+        // 如果不是同一级元素
+        if($compareImg.parentNode !== target.parentNode){
+            target.style.outlineColor = 'blue';
+            return true;
+        }
+        // 使用Node.compareDocumentPosition(otherNode); 来比较前后关系
+        var compareValue = target.compareDocumentPosition($compareImg);
+        if (compareValue === 2) {
+            // compareImg在前
+            target.style.outlineColor = 'green';
+        } else if (compareValue === 4) {
+            // compareImg在后
+            target.style.outlineColor = 'red';
+        } else if (compareValue === 0) {
+            // 就是compareImg元素自身
+        }
+
+        // 第二个比较前后顺序的方法
+        // 想了想，不借助上面的api，也可以根据这个来
+        var childList = $compareImg.parentElement.children;
+        var compareImgIndex = Array.prototype.indexOf.call(childList, $compareImg);
+        var targetImgIndex = Array.prototype.indexOf.call(childList, target);
+        // 比较大小
+        if(compareImgIndex < targetImgIndex){
+            // compareImg在前
+        }else if(compareImgIndex > targetImgIndex){
+            // compareImg在后
+        }else{
+            // 自身
+        }
+        return true;
+    });
+</script>
+</html>

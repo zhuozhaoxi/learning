@@ -1,0 +1,94 @@
+<!Doctype html>
+<html>
+<head>
+    <title>
+        css小测，hover时tips功能
+    </title>
+    <meta charset="utf8" />
+    <style>
+        a.css-tips{
+            text-decoration: none;
+            color: black;
+            display: inline-block;
+            position: relative;
+            margin-top: 300px;
+        }
+
+        a.css-tips::before,a.css-tips::after{
+            visibility: hidden;
+            /* 优化点1： 关闭事件响应行为 ，体验优化， 即移动到::before,::after的内容上时，不触发.css-tips的hover事件*/
+            /* 渐进增强，只兼容到ie10*/
+            -ms-pointer-events: none;
+            pointer-events: none;
+            /* 优化点2：效果延迟显示，快速移过时，不显示hover */
+            transition: all .15s .15s;
+
+            font-size: 12px;
+        }
+        /* 优化点3： 增加键盘友好 */
+        a.css-tips:focus::before,a.css-tips:focus::after{
+            visibility: visible;
+        }
+
+        a.css-tips:hover::before,a.css-tips:hover::after{
+            visibility: visible;
+        }
+        /* 比较好的实现，bottom定位，margin-bottom微调 */
+        a.css-tips::before{
+            content: attr(data-title);
+            position: absolute;
+            bottom: 100%;
+            padding: 4px 6px;
+            background-color: black;
+
+            margin-bottom: .5em;
+
+            color: white;
+            border-radius: 4px;
+            /* 内容不换行 */
+            white-space: nowrap;
+        }
+        a.css-tips::after{
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 100%;
+
+            margin-bottom: -.5em;
+            /* 兼容ie9 */
+            -ms-transform: translateX(-50%);
+            transform: translateX(-50%);
+
+            border: .5em solid transparent;
+            border-top-color: #000;
+        }
+    </style>
+</head>
+<body>
+    <a href="javascript:" class="css-tips" data-title="删除" role="button">删除<br />删除</a>
+    <div>
+        功能还可以继续优化，可以扩展方向，支持上下左右，通过设定data-title-dir
+    </div>
+</body>
+<!--
+我原来的实现，有点差
+a.css-tips::before{
+content: attr(data-title);
+position: absolute;
+padding: .4em .6em;
+margin-top: -3em;
+background-color: #000000;
+border-radius: .2em;
+color: white;
+}
+
+a.css-tips::after{
+content: '';
+position: absolute;
+margin-top: -1em;
+transform: translateX(50%);
+border: 5px solid transparent;
+border-top-color: #000;
+}
+-->
+</html>
